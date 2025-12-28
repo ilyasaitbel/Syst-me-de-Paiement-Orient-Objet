@@ -1,35 +1,37 @@
 <?php
-
 class Commande
 {
-    private int $clientId;
-    private float $montantTotal;
-    private string $statut;
+    private $id;
+    private $montant_total;
+    private $statut;
+    private $client;
 
-    public function __construct(int $clientId, float $montantTotal, string $statut = 'EN_ATTENTE_PAIEMENT')
+    public const STATUS_EN_ATTENTE = "EN_ATTENTE_PAIEMENT";
+    public const STATUS_PAYE = "PAYEE";
+
+    public function __construct($m)
     {
-        $this->clientId     = $clientId;
-        $this->montantTotal = $montantTotal;
-        $this->statut       = $statut;
+        $this->montant_total = $m;
+        $this->statut = self::STATUS_EN_ATTENTE;
     }
 
-    public function getClientId(): int
+    public function __get($p)
     {
-        return $this->clientId;
+        return $this->$p;
     }
 
-    public function getMontantTotal(): float
+    public function setId($id)
     {
-        return $this->montantTotal;
+        $this->id = (int)$id;
     }
 
-    public function getStatut(): string
+    public function setClient($c)
     {
-        return $this->statut;
+        $this->client = $c;
     }
 
-    public function setStatut(string $statut)
+    public function setStatus($s)
     {
-        $this->statut = $statut;
+        $this->statut = $s;
     }
 }

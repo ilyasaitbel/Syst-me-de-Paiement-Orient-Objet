@@ -1,13 +1,32 @@
 <?php
-
-abstract class Paiement implements PaiementInterface
+abstract class Payment
 {
-    protected int $commandeId;
-    protected float $montant;
+    protected $id;
+    protected $montant;
+    protected $statut;
+    protected $commande;
 
-    public function __construct(int $commandeId, float $montant)
+    public const UNPAID = "EN_ATTENTE";
+    public const PAID = "PAYE";
+
+
+    public function __construct($m)
     {
-        $this->commandeId = $commandeId;
-        $this->montant    = $montant;
+        $this->montant = $m;
+        $this->statut = self::UNPAID;
+    }
+
+    abstract public function pay();
+    public function setCommande($c)
+    {
+        if (!$c instanceof Commande) {
+            throw new ValidationException("Commande invalide (stdClass détecté)");
+        }
+        $this->commande = $c;
+    }
+
+    public function setId($id)
+    {
+        $this->id = (int)$id;
     }
 }

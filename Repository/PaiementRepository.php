@@ -1,20 +1,24 @@
 <?php
+require_once "./Database/DatabaseConnection.php";
 
-class PaiementRepository
-{
-    private PDO $pdo;
+class PaymentRepository implements BaseRepository {
 
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    private $db;
+
+    public function __construct(){
+        $this->db = (new DatabaseConnection())->getConnection();
     }
 
-    public function save(int $commandeId, string $type, float $montant)
-    {
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO paiements (commande_id, type_paiement, montant, statut, date_paiement)
-             VALUES (?, ?, ?, 'PAYE', NOW())"
+    public function findAll(){}
+    public function findById($id){}
+
+    public function create($p){
+        $s=$this->db->prepare(
+            "INSERT INTO paiements(montant,statut,commande_id) VALUES(?,?,?)"
         );
-        $stmt->execute([$commandeId, $type, $montant]);
+        $s->execute([$p->montant,$p->statut,$p->commande->id]);
     }
+
+    public function update($o){}
+    public function delete($id){}
 }
